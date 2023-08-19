@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //0818
+
 public class ItemBag : MonoBehaviour
 {
     public List<GameObject> itemPrefabs = new List<GameObject>();
@@ -34,6 +35,8 @@ public class ItemBag : MonoBehaviour
                 float xForce = Random.Range(-3f, 3f); // X ¹æÇâ Èû ·£´ý ¼³Á¤
                 float yForce = Random.Range(jumpForceMin, jumpForceMax); // Y ¹æÇâ Èû ·£´ý ¼³Á¤
                 rb.AddForce(new Vector2(xForce, yForce), ForceMode2D.Impulse); // Æ¢¾î¿À¸£´Â Èû Ãß°¡
+
+             
             }
         }
     }
