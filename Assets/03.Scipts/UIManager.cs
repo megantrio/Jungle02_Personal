@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
     [Header("Default Game Info Area")]
     public TextMeshProUGUI lifeText; //생명력
     public TextMeshProUGUI curruntCarText; //현재 열차 칸
-    public TextMeshProUGUI steminaText; // 체력칸
+    public TextMeshProUGUI staminaText; // 체력칸
 
     [Header("Item Info")]
     //public Transform itemCreatePosTr;
@@ -73,6 +73,11 @@ public class UIManager : MonoBehaviour
         SetViewObject(game: true);
     }
 
+    public void SetTitleView()
+    {
+        SetViewObject(title: true);
+    }
+
     //itemInfo를 띄움
     public void SetItemInfoView()
     {
@@ -88,7 +93,7 @@ public class UIManager : MonoBehaviour
     //칸 클리어시
     public void SetClearView()
     {
-        carClearText.SetText($"이제 당신은 열차의 {_gameManager.Car} 번째 칸을 넘어설 수 있습니다.");
+        carClearText.SetText($"이제 당신은 열차의 {_gameManager.curruntCar} 번째 칸을 넘어설 수 있습니다.");
     }
 
     public void SetEndingView()
@@ -117,8 +122,8 @@ public class UIManager : MonoBehaviour
     private void UpdateAllText()
     {
         UpdatePlayerLife(_gameManager.DefaultPlayerLife);
-        UpdateCarText(_gameManager.Car);
-        UpdatePlayerStemina(_gameManager.DefaultPlayerStemina);
+        UpdateCarText(_gameManager.curruntCar);
+        UpdatePlayerStamina(_gameManager.DefaultPlayerStamina);
     }
 
     public void UpdatePlayerLife(int LifeValue)
@@ -129,40 +134,47 @@ public class UIManager : MonoBehaviour
         lifeText.SetText(newText);
     }
 
-    public void UpdateCarText(int CarIdx)
+    public void UpdateCarText(int curruntCar)
     {
-        curruntCarText.SetText($"{CarIdx}번째 칸");
+        curruntCarText.SetText($"{curruntCar}번째 칸");
     }
 
     //스테미나
-    public void UpdatePlayerStemina(int SteminaValue)
+    public void UpdatePlayerStamina(int StaminaValue)
     {
         string newText = string.Empty;
-        for (int i = 0; i < SteminaValue; i++)
+        for (int i = 0; i < StaminaValue; i++)
             newText += "★";
-        steminaText.SetText(newText);
+        staminaText.SetText(newText);
     }
 
-
-/*    /// <summary>
-    /// 해당 오브젝트는 혹시라도 아이템이 비어있는 경우에 호출되지 않 음. 호출부에서 빈 값일 때 수행안하도록 처리됨
-    /// </summary>
-    public void RemoveItemOnView()
+    public void ShowResult()
     {
-        var obj = itemCreatePosTr.GetChild(0).gameObject;
-        Destroy(obj);
-    }*/
+        int remainingEnemyLife, remainingPlayerLife;
+
+        // 전투 결과 계산
+        BattleManager.Instance.CalculateBattleResults(BattleManager.Instance.GetEnemyStaminaByCar
+            (GameManager.Instance.currentCar), out remainingEnemyLife, out remainingPlayerLife);
+
+        // 결과에 따라 메시지 생성
+        string resultMessage;
+        if (remainingEnemyLife == 0)
+        {
+            resultMessage = "이겼다...";
+        }
+        else
+        {
+            resultMessage = "치명상을 입었다...";
+        }
+
+        resultText.SetText(resultMessage);
+    }
+
 
     public void LoadItemInfo()
     {
         itemInfoObj.SetActive(true);
     }
-
- /*   public void GameRestart()
-    {
-        _gameManager.Reset();
-    }*/
-
 
     public void Retry()
     {

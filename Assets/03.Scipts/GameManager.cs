@@ -13,12 +13,14 @@ public class GameManager : MonoBehaviour
     public InventoryManager Inventory { get; private set; }
     public int currentCar = 0;
 
+    public static GameManager Instance => instance;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            InitializePlayerStats();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour
     public GameState State { get; private set; }
 
     private int _car;
-    public int Car
+    public int curruntCar
     {
         get => _car;
         private set
@@ -50,8 +52,46 @@ public class GameManager : MonoBehaviour
 
     //플레이어 기본 스탯
     public int DefaultPlayerLife = 10;
-    public int DefaultPlayerStemina = 10;
-  
+    public int DefaultPlayerStamina = 10;
+    public int DefaultPlayerAttack = 10;
+    public int DefaultPlayerDefense = 10;
+ 
+
+    private int playerLife;
+    public int PlayerLife
+    {
+        get { return playerLife; }
+        set { playerLife = Mathf.Max(0, value); } // 음수 값 방지
+    }
+
+    private int playerStamina;
+    public int PlayerStamina
+    {
+        get { return playerStamina; }
+        set { playerStamina = Mathf.Max(0, value); } 
+    }
+
+    private int playerAttack;
+    public int PlayerAttack
+    {
+        get { return playerAttack; }
+        set { playerAttack = Mathf.Max(0, value); }
+    }
+
+    private int playerDefense;
+    public int PlayerDefense
+    {
+        get { return playerDefense; }
+        set { playerDefense = Mathf.Max(0, value); }
+    }
+    
+    private void InitializePlayerStats()
+    {
+        PlayerLife = DefaultPlayerLife;
+        PlayerStamina = DefaultPlayerStamina;
+        // 기타 초기화 작업
+    }
+
     void Start()
     {
         UIManager = UIManager.instance;
@@ -60,7 +100,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    #region 게임 상태 관련
     public void ChangeState(GameState state)
     {
         State = state;
@@ -83,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void gameStart()
     {
-        Car = 1;
+        curruntCar = 1;
         ChangeState(GameState.NotBattle);
         UIManager.instance.titleObj.SetActive(false);
         UIManager.SetDefaultView();
@@ -96,6 +135,19 @@ public class GameManager : MonoBehaviour
     {
         UIManager.SetResultView();
     }
+
+/*    public string BattleResult()
+    {
+
+        if(remainingEnemyLife == 0)
+        {
+            return "이겼다...";
+        }
+        else
+        {
+            return "치명상을 입었다...";
+        }
+    }*/
 
     //죽었을때
     void Die()
@@ -110,32 +162,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void Clear() => StartCoroutine(nameof(ClearNextEventBeforeDelay));
-
-    private bool nextStageWaitFlag;
-    IEnumerator ClearNextEventBeforeDelay()
+    public void ending()
     {
-        // 보상 처리 및 초기화
-        nextStageWaitFlag = true;
-        UIManager?.SetResultView();
-        UIManager.instance.SetClearView();
-        yield return new WaitForSeconds(2f); // 대기 (여운)
-
-
-        if (Car <= 11)
-        {
-            Car++;
-
-            ChangeState(GameState.NotBattle);
-        }
-        else
+        if(curruntCar == 11)
         {
             UIManager.instance.endingObj.SetActive(true);
-            Time.timeScale = 0;
-        }
-
+        }    
     }
-    #endregion
 
     public void Reset()
     {
@@ -143,4 +176,5 @@ public class GameManager : MonoBehaviour
         Destroy(this.gameObject);
         State = GameState.Title;
     }
+
 }
