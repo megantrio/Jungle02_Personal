@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 
 public class UIManager : MonoBehaviour
@@ -12,8 +13,16 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
-        _inventoryManager = new InventoryManager();
+        if (instance == null)
+        {
+            instance = this;
+            _inventoryManager = InventoryManager.Instance;
+        }
+        else
+        {
+            Destroy(gameObject); // 이미 초기화된 경우 이 오브젝트를 파괴
+            return;
+        }
     }
     #endregion
 
@@ -21,6 +30,7 @@ public class UIManager : MonoBehaviour
     private InventoryManager _inventoryManager;
     private ItemData currentItemData;
     private ItemData displayedItemData;
+    
 
     #region Object할당
     [Header("UIGroup")]
@@ -58,12 +68,15 @@ public class UIManager : MonoBehaviour
     public Button discardButton;
     #endregion
 
+    //Start
     private void Start()
     {
         if (itemInfoObj != null)
         {
             itemInfoObj.SetActive(false);
         }
+
+        UpdatePocketPanelUI();
     }
 
     #region 뷰 모음 
@@ -177,19 +190,14 @@ public class UIManager : MonoBehaviour
         displayedItemData = itemData;
     }
 
-    public void HideItemInfoPanel()
-    {
-        itemInfoObj.SetActive(false);
-        currentItemData = null;
-    }
-
+    //아이템 패널 업데이트
     private void UpdateItemInfoPanelUI()
     {
         if (itemInfoObj != null && currentItemData != null)
         {
 
             itemInfoText.text = $"아이템 이름 : {currentItemData.Name}\n" +
-                                $"아이템 설명 : {currentItemData.Description}\n" +
+                                $"아이템 설명 : {currentItemData.Description}\n\n" +
                                 $"추가 생명 : {currentItemData.AddLife}\n" +
                                 $"추가 공격력 : {currentItemData.AddAttack}\n" +
                                 $"추가 방어력 : {currentItemData.AddDefense}\n" +
@@ -205,9 +213,10 @@ public class UIManager : MonoBehaviour
         if (currentItemData != null)
         {
             // 선택한 아이템 데이터를 현재 아이템으로 저장
-            _inventoryManager.EquipItem(currentItemData);
+            InventoryManager.Instance.EquipItem(currentItemData);
             itemInfoObj.SetActive(false);
 
+            //최근 열람한 아이템 정보를 담고 있는 오브젝트를 찾아서 파괴
             if (displayedItemData != null)
             {
                 GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
@@ -221,6 +230,8 @@ public class UIManager : MonoBehaviour
                     }
                 }
             }
+
+            Debug.Log("아이템 장착");
         }
     }
 
@@ -230,7 +241,7 @@ public class UIManager : MonoBehaviour
     {
         if (currentItemData != null)
         {
-            _inventoryManager.UnequipItem();
+            InventoryManager.Instance.UnequipItem();
             itemInfoObj.SetActive(false);
 
             if (displayedItemData != null)
@@ -246,8 +257,61 @@ public class UIManager : MonoBehaviour
                     }
                 }
             }
+
+            Debug.Log("아이템 장착 해제");
         }
     }
+
+    #endregion
+
+    public void ShowPocket()
+    { 
+        if (currentItemData != null)
+        {
+            //인벤토리 매니저에서 현재 장착 아이템만 불러오는 기능
+        }
+
+
+            
+    }
+
+
+    private void UpdatePocketPanelUI()
+    {
+        if (pocketObj != null && currentItemData != null)
+        {
+            curruntEquipItem.text = $"장착아이템 : {currentItemData.Name}\n";
+
+            //추가 수치 불러오기
+            PlayerStats player = _gameManager.GetPlayerStats();
+            List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
+            List<ItemData> usableItems = _inventoryManager.GetUsableItems();
+
+            //생명력. 늘어날지는 모르겠음 늘어나게끔 구현 하면 좋음
+            int totalLifeBoost = equipableItems.Sum(item => item.AddLife) + usableItems.Sum(item => item.AddLife);
+
+            //아이템을 통해 늘어난 공격력 계산
+            int totalAttackBoost = equipableItems.Sum(item => item.AddAttack) + usableItems.Sum(item => item.AddAttack);
+            int modifiedAttack = player.Attack + totalAttackBoost;
+
+            //아이템을 통해 늘어난 방어력 계산
+            int totalDefenseBoost = equipableItems.Sum(item => item.AddDefense) + usableItems.Sum(item => item.AddDefense);
+            int modifiedDefense = player.Defense + totalDefenseBoost;
+
+            //아이템을 통해 늘어난 공격력 계산
+            int totalAgilityBoost = equipableItems.Sum(item => item.AddAgility) + usableItems.Sum(item => item.AddAgility);
+            int modifiedAgility = player.Agility + totalAgilityBoost;
+
+            //현재 수치  출력
+            curruntAttack.text = $"공격력 : {modifiedAttack}\n";
+            curruntDefense.text = $"방어력 : {modifiedDefense}\n";
+            curruntAgility.text = $"민첩함 : {modifiedAgility}\n";
+        }
+
+    }
+    #region 주머니
+
+
 
     #endregion
 
