@@ -16,6 +16,6 @@ MonoBehaviour:
   Description: "\uC798 \uB358\uC9C0\uB294\uAC8C \uAD00\uAC74\uC774\uB2E4."
   ItemType: 1
   AddLife: 0
-  AddAttack: 1
+  AddAttack: 2
   AddDefense: 0
-  AddAgility: 5
+  AddAgility: 15

@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Title);
         UIManager.instance.titleObj.SetActive(true);
 
-        PlayerLife = 10;
+        PlayerLife = 50;
         PlayerAttack = 5;
         PlayerDefense = 0;
         PlayerAgility = 20;

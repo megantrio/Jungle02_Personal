@@ -18,6 +18,6 @@ MonoBehaviour:
     \uAC83 \uAC19\uB2E4."
   ItemType: 0
   AddLife: 0
-  AddAttack: 3
-  AddDefense: 0
+  AddAttack: 2
+  AddDefense: -2
   AddAgility: 10

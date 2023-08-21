@@ -16,6 +16,6 @@ MonoBehaviour:
   Description: "\uC5C4\uB9C8\uB294 \uAC15\uD558\uB2E4."
   ItemType: 0
   AddLife: 0
-  AddAttack: 4
-  AddDefense: 0
+  AddAttack: 2
+  AddDefense: 3
   AddAgility: 0

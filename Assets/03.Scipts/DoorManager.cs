@@ -22,9 +22,11 @@ public class DoorManager : MonoBehaviour
 
     public TextMeshProUGUI playerDamage;
     public TextMeshProUGUI enemyDamage;
+    public TextMeshProUGUI enemyLifeText;
     public GameObject playerDamageObj;
     public GameObject enemyDamageObj;
     public GameObject enemyObj;
+    public GameObject enemyLifeObj;
 
     public int enemyLife;
     public int enemyAttack;
@@ -45,6 +47,7 @@ public class DoorManager : MonoBehaviour
         doorManagerCollider = GetComponent<Collider2D>();
         initialScale = doorChild.transform.localScale;
         _gameManager = FindObjectOfType<GameManager>();
+        
     }
 
     private void Update()
@@ -83,6 +86,13 @@ public class DoorManager : MonoBehaviour
                 UIManager.instance.UpdateCarText(_gameManager.currentCar);
                 Debug.Log("currentCar increased: " + _gameManager.currentCar);
                 Invoke("ButtonApply", 1.5f);
+                enemyLifeObj.SetActive(true);
+                string newText = string.Empty;
+                for (int i = 0; i < enemyLife; i++)
+                {
+                    newText += "♥";
+                    enemyLifeText.SetText(newText);
+                }
             }
         }
     }
@@ -95,6 +105,7 @@ public class DoorManager : MonoBehaviour
 
     IEnumerator BattleGetIt()
     {
+        
         yield return null;
         Debug.Log("전투 시작");
         battleButton.SetActive(false);

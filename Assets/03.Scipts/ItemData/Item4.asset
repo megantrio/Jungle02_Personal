@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f345bde4a3f7242a61283afe79853b, type: 3}
   m_Name: Item4
   m_EditorClassIdentifier: 
-  Name: "\uBC15\uBB3C\uAD00\uC5D0\uC11C \uD6D4\uCCD0\uC628 \uC804\uC0AC\uC758 \uAC11\uC637"
-  Description: "\uC774 \uC0AC\uC2E4\uC774 \uC54C\uB824\uC9C0\uBA74 \uBC94\uC8C4\uC790\uAC00
-    \uB420\uC9C0\uB3C4 \uBAA8\uB978\uB2E4."
+  Name: "\uD5CC\uD130\uC758 \uC0F7"
+  Description: "\uD0C4\uC57D\uC774 \uB2E8 2\uAC1C\uB2E4. \uC4F0\uACE0 \uBC84\uB824\uC57C
+    \uD558\uC9C0\uB9CC \uB0B4\uAC00 \uBCF8 \uBB3C\uAC74 \uC911\uC5D0 \uAC00\uC7A5
+    \uAC15\uB825\uD558\uB2E4."
   ItemType: 0
   AddLife: 0
-  AddAttack: 0
-  AddDefense: 10
-  AddAgility: 0
+  AddAttack: 6
+  AddDefense: -2
+  AddAgility: -1

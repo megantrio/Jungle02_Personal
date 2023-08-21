@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: "\uBBF8\uD0A4\uB9C8\uC6B0\uC2A4 MP3"
   Description: "Music Is My Life\u2026"
   ItemType: 1
-  AddLife: 4
+  AddLife: 2
   AddAttack: 0
-  AddDefense: 0
-  AddAgility: 0
+  AddDefense: 2
+  AddAgility: 2

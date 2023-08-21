@@ -17,7 +17,7 @@ MonoBehaviour:
     \uC77C\uC0B0\uD654\uC9C8\uC18C\uAC00 \uC0DD\uC131\uB3FC \uADFC\uC721 \uD68C\uBCF5\uC5D0
     \uB3C4\uC6C0\uC774 \uB41C\uB2E4. \uB77C\uACE0 \uC4F0\uC5EC\uC838 \uC788\uB2E4."
   ItemType: 1
-  AddLife: 2
-  AddAttack: 0
-  AddDefense: 1
-  AddAgility: 10
+  AddLife: -10
+  AddAttack: 6
+  AddDefense: 0
+  AddAgility: 0
