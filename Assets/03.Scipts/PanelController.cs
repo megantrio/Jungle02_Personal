@@ -17,7 +17,6 @@ public class PanelController : MonoBehaviour
     public void OpenPanel()
     {
         parent.SetActive(true);
-        UIManager.UpdatePocketPanelUI();
     }
 
     public void ClosePanel()

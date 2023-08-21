@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
     {
         //템 리셋 하는 기능이 있긴 해야 할듯
         ChangeState(GameState.Title);
+        UIManager.instance.gameOverObj.SetActive(false);
     }
 
     //모든 칸 클리어 했을 때.

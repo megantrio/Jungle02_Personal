@@ -31,7 +31,8 @@ public class UIManager : MonoBehaviour
     private InventoryManager _inventoryManager;
     private ItemData currentItemData;
     private ItemData displayedItemData;
-    
+    private List<ItemData> availableItems = new List<ItemData>();
+
 
     #region Object할당
     [Header("UIGroup")]
@@ -53,6 +54,7 @@ public class UIManager : MonoBehaviour
     public GameObject itemPrefab;
     public TextMeshProUGUI itemInfoText;
     public GameObject noticeObj;
+    public GameObject notice2Obj;
 
     [Header("Pocket")]
     public GameObject pocketObj; //인벤토리
@@ -143,7 +145,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region 업데이트
+    #region 업데이트 게임 텍스트
     private void UpdateAllText()
     {
         UpdatePlayerLife(_gameManager.DefaultPlayerLife);
@@ -304,37 +306,35 @@ public class UIManager : MonoBehaviour
 
     #region 주머니
 
-
-    public void UpdatePocketPanelUI()
+    //공격력, 방어력, 민첩함 만
+    public void UpdatePocketPanelUI(int modifiedAttack, int modifiedDefense, int modifiedAgility, int equippedAttack, int equippedDefense, 
+        int equippedAgility)
     {
-        //추가 수치 불러오기
+
         PlayerStats player = _gameManager.GetPlayerStats();
-        List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
-        List<ItemData> usableItems = _inventoryManager.GetUsableItems();
-
-        Debug.Log("수치 불러옴");
-
-        //생명력. 늘어날지는 모르겠음 늘어나게끔 구현 하면 좋음
-        int totalLifeBoost = equipableItems.Sum(item => item.AddLife) + usableItems.Sum(item => item.AddLife);
-
-        //아이템을 통해 늘어난 공격력 계산
-        int totalAttackBoost = equipableItems.Sum(item => item.AddAttack) + usableItems.Sum(item => item.AddAttack);
-        int modifiedAttack = player.Attack + totalAttackBoost;
-
-        //아이템을 통해 늘어난 방어력 계산
-        int totalDefenseBoost = equipableItems.Sum(item => item.AddDefense) + usableItems.Sum(item => item.AddDefense);
-        int modifiedDefense = player.Defense + totalDefenseBoost;
-
-        //아이템을 통해 늘어난 공격력 계산
-        int totalAgilityBoost = equipableItems.Sum(item => item.AddAgility) + usableItems.Sum(item => item.AddAgility);
-        int modifiedAgility = player.Agility + totalAgilityBoost;
-
-        if (pocketPanelObj != null && currentItemData != null)
+        if (currentItemData != null)
         {
-            curruntEquipItem.text = $"장착아이템 : {currentItemData.Name}";
-            curruntAttack.text = $"공격력 : {modifiedAttack + currentItemData.AddAttack}";
-            curruntDefense.text = $"방어력 : {modifiedDefense + currentItemData.AddDefense}";
-            curruntAgility.text = $"민첩함 : {modifiedAgility + currentItemData.AddAgility}";
+            List<ItemData> availableItems = GetAvailableItems();
+
+            List<string> equippedItemNames = new List<string>();
+
+            foreach (ItemData item in availableItems)
+            {
+                if (item == currentItemData && item.ItemType == ItemType.Equipable)
+                {
+                    equippedItemNames.Add(item.Name);
+                }
+            }
+
+            if (equippedItemNames.Count > 0)
+            {
+                string equippedItemsText = string.Join(", ", equippedItemNames);
+                curruntEquipItem.text = $"장착아이템 : {equippedItemsText}";
+            }
+
+            curruntAttack.text = $"공격력 : {modifiedAttack + equippedAttack}";
+            curruntDefense.text = $"방어력 : {modifiedDefense + equippedDefense}";
+            curruntAgility.text = $"민첩함 : {modifiedAgility + equippedAgility}";
         }
         else
         {
@@ -344,12 +344,67 @@ public class UIManager : MonoBehaviour
             curruntAgility.text = $"민첩함 : {player.Agility}";
         }
 
+        List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
+        List<ItemData> usableItems = _inventoryManager.GetUsableItems();
+
+        int totalLifeBoost = equipableItems.Sum(item => item.AddLife) + usableItems.Sum(item => item.AddLife);
+        int modifiedLife = player.Life + totalLifeBoost;
+
+        UpdatePlayerLife(modifiedLife);
+
     }
 
-    public void LoadPocketPanel(ItemData itemData)
+
+
+    /*//추가 수치 불러오기
+    PlayerStats player = _gameManager.GetPlayerStats();
+        List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
+        List<ItemData> usableItems = _inventoryManager.GetUsableItems();
+
+        Debug.Log("수치 불러옴");
+
+        //생명력. 늘어날지는 모르겠음 늘어나게끔 구현 하면 좋음
+        
+        UpdatePlayerLife(player.Life += totalLifeBoost);
+        Debug.Log("생명력 업그레이드");
+
+        if (currentItemData != null)
+        {
+            List<ItemData> availableItems = GetAvailableItems();
+
+            List<string> equippedItemNames = new List<string>();
+
+            foreach (ItemData item in availableItems)
+            {
+                if (item == currentItemData && item.ItemType == ItemType.Equipable)
+                {
+                    equippedItemNames.Add(item.Name);
+                }
+            }
+
+            if (equippedItemNames.Count > 0)
+            {
+                string equippedItemsText = string.Join(", ", equippedItemNames);
+                curruntEquipItem.text = $"장착아이템 : {equippedItemsText}";
+            }
+
+            curruntAttack.text = $"공격력 : {modifiedAttack + equippedAttack}";
+            curruntDefense.text = $"방어력 : {modifiedDefense + equippedDefense}";
+            curruntAgility.text = $"민첩함 : {modifiedAgility + equippedAgility}";
+        }
+        else
+        {
+            curruntEquipItem.text = "장착아이템 : 없음";
+            curruntAttack.text = $"공격력 : {player.Attack}";
+            curruntDefense.text = $"방어력 : {player.Defense}";
+            curruntAgility.text = $"민첩함 : {player.Agility}";
+        }
+
+    }*/
+
+    public List<ItemData> GetAvailableItems()
     {
-        currentItemData = itemData;
-        UpdatePocketPanelUI();
+        return availableItems;
     }
 
     #endregion

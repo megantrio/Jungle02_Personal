@@ -14,7 +14,6 @@ public class ItemPanelLoader : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             UIManager.instance.ShowItemInfo(itemData);
-            Debug.Log("Ãæµ¹ÇÔ");
         }
 
     }

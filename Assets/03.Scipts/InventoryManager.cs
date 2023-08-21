@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
     private static InventoryManager instance;
+    private GameManager _gameManager;
     public static InventoryManager Instance => instance;
     public UIManager UIManager { get; set; }
 
@@ -16,6 +18,7 @@ public class InventoryManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            _gameManager = GameManager.Instance;
         }
         else
         {
@@ -34,27 +37,56 @@ public class InventoryManager : MonoBehaviour
     // 현재 장착된 아이템을 설정하는 메서드
     public void EquipItem(ItemData item)
     {
-        equippedItem = item;
-        availableItems.Add(item);
-
-        if(availableItems.Count >= 4 ) 
+        if (!availableItems.Contains(item))
         {
-            UIManager.instance.noticeObj.SetActive(true);
+            equippedItem = item;
+            availableItems.Add(item);
+
+
+            //스탯 증가
+            int totalLifeBoost = item.AddLife;
+            int totalAttackBoost = item.AddAttack;
+            int totalDefenseBoost = item.AddDefense;
+            int totalAgilityBoost = item.AddAgility;
+
+            PlayerStats playerStats = _gameManager.GetPlayerStats();
+            playerStats.Life += totalLifeBoost;
+            playerStats.Attack += totalAttackBoost;
+            playerStats.Defense += totalDefenseBoost;
+            playerStats.Agility += totalAgilityBoost;
+
+            if (availableItems.Count >= 4)
+            {
+                UIManager.instance.noticeObj.SetActive(true);
+                Invoke("CloseNotice", 1f);
+            }
+        }  
+
+        if (availableItems.Contains(item))
+        {
+            UIManager.instance.notice2Obj.SetActive(true);
             Invoke("CloseNotice", 1f);
         }
+
     }
+
 
     public void CloseNotice()
     {
         UIManager.instance.noticeObj.SetActive(false);
+        UIManager.instance.notice2Obj.SetActive(false);
     }
 
     // 현재 장착된 아이템을 해제하는 메서드
     public void UnequipItem()
     {
-        equippedItem = null;
-        availableItems.RemoveAt(1);
+        if (equippedItem != null && availableItems.Contains(equippedItem))
+        {
+            availableItems.Remove(equippedItem);
+            equippedItem = null;
+        }
     }
+
 
     // 현재 장착된 아이템을 가져오는 메서드
     public ItemData GetEquippedItem()
@@ -71,6 +103,7 @@ public class InventoryManager : MonoBehaviour
     {
         return availableItems.FindAll(item => item.ItemType == ItemType.Usable);
     }
+
 
     public void ResetItems()
     {
