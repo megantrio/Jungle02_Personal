@@ -46,10 +46,12 @@ public class GameManager : MonoBehaviour
         private set
         {
             _car = value;
-            UIManager?.UpdateCarText(_car);
+            if (UIManager != null)
+            {
+                UIManager.UpdateCarText(_car);
+            }
         }
     }
-
 
     // 플레이어 기본 스탯을 가져오는 함수
     public PlayerStats GetPlayerStats() => PlayerStates;
@@ -65,28 +67,28 @@ public class GameManager : MonoBehaviour
     private int playerLife;
     public int PlayerLife
     {
-        get { return 10; }
+        get { return 20; }
         set { playerLife = Mathf.Max(0, value); } // 음수 값 방지
     }
 
     private int playerAttack;
     public int PlayerAttack
     {
-        get { return 10; }
+        get { return 2; }
         set { playerAttack = Mathf.Max(0, value); }
     }
 
     private int playerDefense;
     public int PlayerDefense
     {
-        get { return 10; }
+        get { return 3; }
         set { playerDefense = Mathf.Max(0, value); }
     }
 
     private int playerAgility;
     public int PlayerAgility
     {
-        get { return 10; }
+        get { return 50; }
         set { playerAgility = Mathf.Max(0, value); }
     }
 
@@ -128,7 +130,6 @@ public class GameManager : MonoBehaviour
             case GameState.NotBattle:
                 break;
             case GameState.OnBattle:
-                Battle();
                 break;
             case GameState.Die:
                 Die();
@@ -148,17 +149,12 @@ public class GameManager : MonoBehaviour
     public void gameStart()
     {
         curruntCar = 1;
-
         player.SetActive(true);
         ChangeState(GameState.NotBattle);
         UIManager.instance.titleObj.SetActive(false);
         UIManager.SetDefaultView();
     }
 
-    public void Battle()
-    {
-        UIManager.instance.pocketObj.SetActive(false);
-    }
 
     public void Retry()
     {
@@ -170,7 +166,8 @@ public class GameManager : MonoBehaviour
     //모든 칸 클리어 했을 때.
     public void ending()
     {
-        if(curruntCar == 11)
+
+        if(curruntCar == 5)
         {
             UIManager.instance.endingObj.SetActive(true);
         }    

@@ -18,9 +18,6 @@ public class InventoryManager : MonoBehaviour
     private List<ItemData> equippedItems = new List<ItemData>(); 
     private ItemData equippedItem;// 현재 장착된 아이템을 담을 변수
     private ItemData useabledItem; //사용형 아이템을 담을 변수
-    private int totalModifiedAttack = 0;
-    private int totalModifiedDefense = 0;
-    private int totalModifiedAgility = 0;
 
     #region 싱글톤
     private void Awake()

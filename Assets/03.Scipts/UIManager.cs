@@ -102,6 +102,10 @@ public class UIManager : MonoBehaviour
         SetViewObject(title: true);
     }
 
+    public void SetBattleView()
+    {
+        emenyLifeObj.SetActive(true);
+    }
 
     public void SetItemInfoView(ItemData itemData)
     {
@@ -151,14 +155,6 @@ public class UIManager : MonoBehaviour
         UpdateCarText(_gameManager.curruntCar);
     }
 
-/*    public void UpdatePlayerLife(int LifeValue)
-    {
-        string newText = string.Empty;
-        for (int i = 0; i < LifeValue; i++)
-            newText += "♥";
-        lifeText.SetText(newText);
-    }*/
-
     public void UpdateCarText(int curruntCar)
     {
         curruntCarText.SetText($"{curruntCar}번째 칸");
@@ -175,17 +171,10 @@ public class UIManager : MonoBehaviour
     #endregion
 
     //전투 결과 출력
-    public void ShowResult(int remainingEnemyLife, int remainingPlayerLife)
+    public void ShowResult()
     {
-       
-        string resultMessage = remainingEnemyLife == 0 ? "이겼다..." : "";
-        if (remainingPlayerLife == 0)
-        {
-            _gameManager.Die();
-        }
-
-        resultObj.SetActive(true);
-        resultText.SetText(resultMessage);
+        resultText.SetText($"이겼다...");
+        resultObj.SetActive(true);       
     }
 
     #region 아이템

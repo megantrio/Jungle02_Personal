@@ -1,28 +1,31 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using static GameManager;
 
 public class BattleManager : MonoBehaviour
 {
-    public GameObject BattleWall;
+
     private static BattleManager instance;
     public static BattleManager Instance => instance;
 
-    private GameManager gameManager;
+    private GameManager _gameManager;
     private InventoryManager inventoryManager;
 
     private void Awake()
     {
         instance = this;
-        gameManager = GameManager.Instance;
+        _gameManager = GameManager.Instance;
         inventoryManager = GetComponent<InventoryManager>();
     }
 
 
+
+
     public void BattleStart(int enemyCar)
     {
-        PlayerStats player = gameManager.GetPlayerStats(); // 플레이어 스탯 가져오기
+        Debug.Log("BattleStart called with enemyCar: " + enemyCar);
+        PlayerStats player = _gameManager.GetPlayerStats(); // 플레이어 스탯 가져오기
         int enemyLife = GetEnemyLifeByCar(enemyCar);
         int enemyAttack = GetEnemyAttackByCar(enemyCar);
         int enemyAgility = GetEnemyAgilityByCar(enemyCar);
@@ -68,17 +71,7 @@ public class BattleManager : MonoBehaviour
         
     }
 
-    void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && gameManager != null && gameManager.UIManager != null)
-        {
-            int enemyCar = gameManager.curruntCar;
-            BattleStart(enemyCar);
-            gameManager.ChangeState(GameState.OnBattle);
-            Debug.Log("배틀 스타트");
-        }
 
-    }
 
     //데미지 계산
     public int CalculateDamage(int attackerAttack, int targetDefense)
@@ -111,7 +104,7 @@ public class BattleManager : MonoBehaviour
     {
         int enemyAttack;
 
-        if (car == 1)
+        if (car == 2)
         {
             enemyAttack = 20;
         }
@@ -127,7 +120,7 @@ public class BattleManager : MonoBehaviour
     {
         int enemyLife;
 
-        if (car == 1)
+        if (car == 2)
         {
             enemyLife = 20;
         }
@@ -143,7 +136,7 @@ public class BattleManager : MonoBehaviour
     {
         int enemyAgility;
 
-        if (car == 1)
+        if (car == 2)
         {
             enemyAgility = 20;
         }
@@ -155,3 +148,4 @@ public class BattleManager : MonoBehaviour
         return enemyAgility;
     }
 }
+*/

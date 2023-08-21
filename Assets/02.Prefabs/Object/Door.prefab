@@ -213,6 +213,12 @@ MonoBehaviour:
   doorChild: {fileID: 6516070747765384292}
   scaleDuration: 0.5
   enableTriggerAfterActivation: 1
+  battleButton: {fileID: 0}
+  playerDamage: {fileID: 0}
+  enemyDamage: {fileID: 0}
+  playerDamageObj: {fileID: 0}
+  enemyDamageObj: {fileID: 0}
+  enemyObj: {fileID: 0}
 --- !u!61 &6516070748447209062
 BoxCollider2D:
   m_ObjectHideFlags: 0

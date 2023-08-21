@@ -1,4 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
 //0818
 
@@ -11,8 +15,22 @@ public class DoorManager : MonoBehaviour
     private float scaleTimer = 0.0f; // 스케일 변화 타이머
     private Vector3 initialScale; // 초기 스케일 값
     private GameManager _gameManager;
+    private InventoryManager inventoryManager;
+    public GameObject battleButton;
+
+    public TextMeshProUGUI playerDamage;
+    public TextMeshProUGUI enemyDamage;
+    public GameObject playerDamageObj;
+    public GameObject enemyDamageObj;
+    public GameObject enemyObj;
 
     private Collider2D doorManagerCollider;
+
+    private void Awake()
+    {
+        _gameManager = GameManager.Instance;
+        inventoryManager = GetComponent<InventoryManager>();
+    }
 
     private void Start()
     {
@@ -48,7 +66,7 @@ public class DoorManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if(_gameManager != null)
+            if (_gameManager != null)
             {
                 // 플레이어와 충돌 시 자식 오브젝트 활성화
                 doorChild.SetActive(true);
@@ -56,7 +74,108 @@ public class DoorManager : MonoBehaviour
                 _gameManager.currentCar++;
                 UIManager.instance.UpdateCarText(_gameManager.currentCar);
                 Debug.Log("currentCar increased: " + _gameManager.currentCar);
+                Invoke("ButtonApply", 1.5f);
             }
         }
+    }
+
+    public void BattleStart()
+    {
+        StartCoroutine(BattleGetIt());
+        /*e = BattleGetIt();
+        ee.MoveNext();*/
+    }
+
+
+    IEnumerator BattleGetIt()
+    {
+        yield return null;
+        battleButton.SetActive(false);
+        Debug.Log("전투 시작");
+        PlayerStats player = _gameManager.GetPlayerStats(); // 플레이어 스탯 가져오기
+        int enemyLife = 30;
+        int enemyAttack = 4;
+        int enemyAgility = 40;
+       
+
+        // 민첩함 비교하여 선공권 판단
+        bool playerFirst = _gameManager.PlayerAgility >= enemyAgility;
+        Debug.Log("선공권 판단");
+
+        int curruntPlayerLife = _gameManager.PlayerLife;
+
+        while (_gameManager.PlayerLife > 0 && enemyLife > 0)
+        {
+            Debug.Log("적 체력 : " + enemyLife);
+            Debug.Log("내 체력 : " + curruntPlayerLife);
+           //Debug.Log("반복문 시작");
+
+            if (playerFirst)
+            {
+                int damagef = _gameManager.PlayerAttack;
+                Debug.Log("데미지f는 = " + damagef);
+                enemyLife -= damagef;
+                enemyDamageObj.SetActive(true);
+                enemyDamage.SetText($"{damagef}");
+                Debug.Log("Player attacks Enemy for " + damagef + " damage.");
+                HideText();
+                
+            }
+
+            else
+            {
+                int damage = enemyAttack - _gameManager.PlayerDefense;
+                Debug.Log("데미지는 = " + damage);
+                if(damage <= -1)
+                {
+                    damage = 0;
+                }
+                else
+                {
+                    curruntPlayerLife -= damage;
+                }
+                
+                Debug.Log("현재 내 체력 : " + (curruntPlayerLife) );
+               
+                playerDamageObj.SetActive(true);
+                playerDamage.SetText($"{damage}");
+                Debug.Log("Enemy attacks Player for " + damage + " damage.");
+                HideText();
+                
+            }
+
+            playerFirst = !playerFirst;
+
+            if (enemyLife <= 0)
+            {
+
+                Debug.Log("적이 죽었다");
+                UIManager.instance.SetResultView();
+                enemyObj.SetActive(false);
+
+                Debug.Log("초기화 전 내 체력은 = " + curruntPlayerLife);
+            }
+
+            if (curruntPlayerLife <= 0)
+            {
+
+                Debug.Log("내가 죽었다");
+                UIManager.instance.SetGameViewDie();
+            }
+
+        }
+
+        
+
+    }
+    public void ButtonApply()
+    {
+        battleButton.SetActive(true);
+    }
+
+    public void HideText()
+    {
+        enemyDamageObj.SetActive(false);
+        playerDamageObj.SetActive(false);
     }
 }
