@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class ItemBag : MonoBehaviour
 {
+    private InventoryManager inventoryManager;
     public List<GameObject> itemPrefabs = new List<GameObject>();
+
+   // private List<ItemData> equippedItems = new List<ItemData>();
     public float jumpForceMin = 5f;
     public float jumpForceMax = 10f;
 
@@ -23,9 +26,10 @@ public class ItemBag : MonoBehaviour
     {
         for (int i = 0; i < 3; i++) // 랜덤한 아이템 3개 드랍
         {
-            int randomIndex = Random.Range(0, itemPrefabs.Count); // 랜덤 인덱스 선택
-            GameObject itemPrefab = itemPrefabs[randomIndex]; // 랜덤한 아이템 프리팹 선택
-
+            
+            int randomIndex = Random.Range(0, itemPrefabs.Count);
+            GameObject itemPrefab = itemPrefabs[randomIndex];
+            Debug.Log("뽑음");
             Vector2 spawnPosition = transform.position + Vector3.up; // 스폰 위치 설정 (현재 위치에서 약간 위로)
             GameObject spawnedItem = Instantiate(itemPrefab, spawnPosition, Quaternion.identity); // 아이템 스폰
 
@@ -35,9 +39,8 @@ public class ItemBag : MonoBehaviour
                 float xForce = Random.Range(-3f, 3f); // X 방향 힘 랜덤 설정
                 float yForce = Random.Range(jumpForceMin, jumpForceMax); // Y 방향 힘 랜덤 설정
                 rb.AddForce(new Vector2(xForce, yForce), ForceMode2D.Impulse); // 튀어오르는 힘 추가
-
-             
             }
+
         }
     }
 }

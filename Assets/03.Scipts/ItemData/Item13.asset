@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f345bde4a3f7242a61283afe79853b, type: 3}
+  m_Name: Item13
+  m_EditorClassIdentifier: 
+  Name: "\uC2A4\uD2B8\uB9AC\uD2B8 \uD30C\uC774\uD130\uC758 \uC190\uBAA9 \uBD95\uB300"
+  Description: "\uD53C\uAC00 \uB9CE\uC774 \uBB3B\uC5B4\uC788\uB294 \uAC83\uC774 \uAF64
+    \uC54C\uC544\uC8FC\uB294 \uC2F8\uC6C0\uAFBC\uC774\uC5C8\uC744\uC9C0\uB3C4 \uBAA8\uB974\uACA0\uB2E4.
+    <\uC7A5\uCC29\uD615 \uC544\uC774\uD15C>"
+  ItemType: 0
+  AddLife: -4
+  AddAttack: 2
+  AddDefense: -1
+  AddAgility: 4

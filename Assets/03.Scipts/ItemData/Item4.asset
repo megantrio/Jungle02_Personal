@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f345bde4a3f7242a61283afe79853b, type: 3}
   m_Name: Item4
   m_EditorClassIdentifier: 
-  Name: "\uD5CC\uD130\uC758 \uC0F7"
+  Name: "\uD5CC\uD130\uC758 \uC0F7\uAC74"
   Description: "\uD0C4\uC57D\uC774 \uB2E8 2\uAC1C\uB2E4. \uC4F0\uACE0 \uBC84\uB824\uC57C
     \uD558\uC9C0\uB9CC \uB0B4\uAC00 \uBCF8 \uBB3C\uAC74 \uC911\uC5D0 \uAC00\uC7A5
-    \uAC15\uB825\uD558\uB2E4."
-  ItemType: 0
+    \uAC15\uB825\uD558\uB2E4.<\uC0AC\uC6A9\uD615 \uC544\uC774\uD15C>"
+  ItemType: 1
   AddLife: 0
   AddAttack: 6
   AddDefense: -2

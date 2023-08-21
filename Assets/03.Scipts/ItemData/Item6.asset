@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Item6
   m_EditorClassIdentifier: 
   Name: "\uB3C4\uC801\uC758 \uD45C\uCC3D"
-  Description: "\uC798 \uB358\uC9C0\uB294\uAC8C \uAD00\uAC74\uC774\uB2E4."
+  Description: "\uC798 \uB358\uC9C0\uB294\uAC8C \uAD00\uAC74\uC774\uB2E4. <\uC0AC\uC6A9\uD615
+    \uC544\uC774\uD15C>"
   ItemType: 1
   AddLife: 0
   AddAttack: 2

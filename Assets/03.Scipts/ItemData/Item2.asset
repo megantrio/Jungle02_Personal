@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: "\uC308\uBC25\uC9D1 \uC8FC\uC778\uC758 \uC7A5\uBBF8\uCE7C"
   Description: "\uC5EC\uAE30\uC11C \uC131\uB2A5 \uD14C\uC2A4\uD2B8\uB97C \uD558\uB7EC
-    \uC628\uAC78\uAE4C?"
+    \uC628\uAC78\uAE4C? <\uC7A5\uCC29\uD615 \uC544\uC774\uD15C>"
   ItemType: 0
   AddLife: 0
   AddAttack: 3

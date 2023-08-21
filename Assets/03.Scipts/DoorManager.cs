@@ -20,11 +20,7 @@ public class DoorManager : MonoBehaviour
     private InventoryManager inventoryManager;
     public GameObject battleButton;
 
-    public TextMeshProUGUI playerDamage;
-    public TextMeshProUGUI enemyDamage;
     public TextMeshProUGUI enemyLifeText;
-    public GameObject playerDamageObj;
-    public GameObject enemyDamageObj;
     public GameObject enemyObj;
     public GameObject enemyLifeObj;
 
@@ -125,12 +121,7 @@ public class DoorManager : MonoBehaviour
             {
                 int damagef = _gameManager.PlayerAttack;
                 Debug.Log("데미지f는 = " + damagef);
-                enemyLife -= damagef;
-                enemyDamageObj.SetActive(true);
-                enemyDamage.SetText($"{damagef}");
-                Debug.Log("Player attacks Enemy for " + damagef + " damage.");
-                HideText();
-                
+                enemyLife -= damagef;               
             }
 
             else
@@ -152,13 +143,6 @@ public class DoorManager : MonoBehaviour
                     newText += "♥";
                     lifeText.SetText(newText);
                 }
-
-                Debug.Log("현재 내 체력 : " + (curruntPlayerLife) );
-               
-                playerDamageObj.SetActive(true);
-                playerDamage.SetText($"{damage}");
-                Debug.Log("Enemy attacks Player for " + damage + " damage.");
-                HideText(); 
                 
             }
 
@@ -197,9 +181,4 @@ public class DoorManager : MonoBehaviour
         battleButton.SetActive(true);
     }
 
-    public void HideText()
-    {
-        enemyDamageObj.SetActive(false);
-        playerDamageObj.SetActive(false);
-    }
 }
