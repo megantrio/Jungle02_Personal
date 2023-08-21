@@ -148,17 +148,16 @@ public class UIManager : MonoBehaviour
     #region 업데이트 게임 텍스트
     private void UpdateAllText()
     {
-        UpdatePlayerLife(_gameManager.DefaultPlayerLife);
         UpdateCarText(_gameManager.curruntCar);
     }
 
-    public void UpdatePlayerLife(int LifeValue)
+/*    public void UpdatePlayerLife(int LifeValue)
     {
         string newText = string.Empty;
         for (int i = 0; i < LifeValue; i++)
             newText += "♥";
         lifeText.SetText(newText);
-    }
+    }*/
 
     public void UpdateCarText(int curruntCar)
     {
@@ -206,8 +205,8 @@ public class UIManager : MonoBehaviour
         if (itemInfoObj != null && currentItemData != null)
         {
 
-            itemInfoText.text = $"아이템 이름 : {currentItemData.Name}\n" +
-                                $"아이템 설명 : {currentItemData.Description}\n\n" +
+            itemInfoText.text = $"[{currentItemData.Name}]\n" +
+                                $"설명 : {currentItemData.Description}\n\n" +
                                 $"추가 생명 : {currentItemData.AddLife}\n" +
                                 $"추가 공격력 : {currentItemData.AddAttack}\n" +
                                 $"추가 방어력 : {currentItemData.AddDefense}\n" +
@@ -300,111 +299,6 @@ public class UIManager : MonoBehaviour
         currentItemData = itemData;
         UpdateItemInfoPanelUI();
         SetViewObject(game: true, itemInfo: true);
-    }
-
-    #endregion
-
-    #region 주머니
-
-    //공격력, 방어력, 민첩함 만
-    public void UpdatePocketPanelUI(int modifiedAttack, int modifiedDefense, int modifiedAgility, int equippedAttack, int equippedDefense, 
-        int equippedAgility)
-    {
-
-        PlayerStats player = _gameManager.GetPlayerStats();
-        if (currentItemData != null)
-        {
-            List<ItemData> availableItems = GetAvailableItems();
-
-            List<string> equippedItemNames = new List<string>();
-
-            foreach (ItemData item in availableItems)
-            {
-                if (item == currentItemData && item.ItemType == ItemType.Equipable)
-                {
-                    equippedItemNames.Add(item.Name);
-                }
-            }
-
-            if (equippedItemNames.Count > 0)
-            {
-                string equippedItemsText = string.Join(", ", equippedItemNames);
-                curruntEquipItem.text = $"장착아이템 : {equippedItemsText}";
-            }
-
-            curruntAttack.text = $"공격력 : {modifiedAttack + equippedAttack}";
-            curruntDefense.text = $"방어력 : {modifiedDefense + equippedDefense}";
-            curruntAgility.text = $"민첩함 : {modifiedAgility + equippedAgility}";
-        }
-        else
-        {
-            curruntEquipItem.text = "장착아이템 : 없음";
-            curruntAttack.text = $"공격력 : {player.Attack}";
-            curruntDefense.text = $"방어력 : {player.Defense}";
-            curruntAgility.text = $"민첩함 : {player.Agility}";
-        }
-
-        List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
-        List<ItemData> usableItems = _inventoryManager.GetUsableItems();
-
-        int totalLifeBoost = equipableItems.Sum(item => item.AddLife) + usableItems.Sum(item => item.AddLife);
-        int modifiedLife = player.Life + totalLifeBoost;
-
-        UpdatePlayerLife(modifiedLife);
-
-    }
-
-
-
-    /*//추가 수치 불러오기
-    PlayerStats player = _gameManager.GetPlayerStats();
-        List<ItemData> equipableItems = _inventoryManager.GetEquipableItems();
-        List<ItemData> usableItems = _inventoryManager.GetUsableItems();
-
-        Debug.Log("수치 불러옴");
-
-        //생명력. 늘어날지는 모르겠음 늘어나게끔 구현 하면 좋음
-        
-        UpdatePlayerLife(player.Life += totalLifeBoost);
-        Debug.Log("생명력 업그레이드");
-
-        if (currentItemData != null)
-        {
-            List<ItemData> availableItems = GetAvailableItems();
-
-            List<string> equippedItemNames = new List<string>();
-
-            foreach (ItemData item in availableItems)
-            {
-                if (item == currentItemData && item.ItemType == ItemType.Equipable)
-                {
-                    equippedItemNames.Add(item.Name);
-                }
-            }
-
-            if (equippedItemNames.Count > 0)
-            {
-                string equippedItemsText = string.Join(", ", equippedItemNames);
-                curruntEquipItem.text = $"장착아이템 : {equippedItemsText}";
-            }
-
-            curruntAttack.text = $"공격력 : {modifiedAttack + equippedAttack}";
-            curruntDefense.text = $"방어력 : {modifiedDefense + equippedDefense}";
-            curruntAgility.text = $"민첩함 : {modifiedAgility + equippedAgility}";
-        }
-        else
-        {
-            curruntEquipItem.text = "장착아이템 : 없음";
-            curruntAttack.text = $"공격력 : {player.Attack}";
-            curruntDefense.text = $"방어력 : {player.Defense}";
-            curruntAgility.text = $"민첩함 : {player.Agility}";
-        }
-
-    }*/
-
-    public List<ItemData> GetAvailableItems()
-    {
-        return availableItems;
     }
 
     #endregion

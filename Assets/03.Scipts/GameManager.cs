@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            InitializePlayerStats();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -51,43 +50,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //플레이어 기본 스탯
-    public int DefaultPlayerLife = 10;
-    public int DefaultPlayerAgility = 10;
-    public int DefaultPlayerAttack = 10;
-    public int DefaultPlayerDefense = 10;
 
     // 플레이어 기본 스탯을 가져오는 함수
-    public PlayerStats GetPlayerStats()
+    public PlayerStats GetPlayerStats() => PlayerStates;
+    private PlayerStats _playerStats;
+    public PlayerStats PlayerStates
     {
-        PlayerStats playerStats = new PlayerStats();
-        playerStats.Life = DefaultPlayerLife;
-        playerStats.Agility = DefaultPlayerAgility;
-        playerStats.Attack = DefaultPlayerAttack;
-        playerStats.Defense = DefaultPlayerDefense;
-        return playerStats;
+        get => _playerStats;
+        set => _playerStats = value;
     }
+
 
     #region 프로퍼티 정의
     private int playerLife;
     public int PlayerLife
     {
-        get { return playerLife; }
+        get { return 10; }
         set { playerLife = Mathf.Max(0, value); } // 음수 값 방지
     }
 
     private int playerAttack;
     public int PlayerAttack
     {
-        get { return playerAttack; }
+        get { return 10; }
         set { playerAttack = Mathf.Max(0, value); }
     }
 
     private int playerDefense;
     public int PlayerDefense
     {
-        get { return playerDefense; }
+        get { return 10; }
         set { playerDefense = Mathf.Max(0, value); }
+    }
+
+    private int playerAgility;
+    public int PlayerAgility
+    {
+        get { return 10; }
+        set { playerAgility = Mathf.Max(0, value); }
     }
 
     #endregion
@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     //초기화 작업
     void Start()
     {
+        PlayerStates = new();
         UIManager = UIManager.instance;
         Inventory = new InventoryManager();
         InitializeUI();
@@ -114,11 +115,6 @@ public class GameManager : MonoBehaviour
         UIManager.instance.emenyLifeObj.SetActive(false);
     }
 
-
-    private void InitializePlayerStats()
-    {
-        PlayerLife = DefaultPlayerLife;
-    }
 
 
     public void ChangeState(GameState state)
