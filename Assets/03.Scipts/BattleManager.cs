@@ -31,6 +31,7 @@ public class BattleManager : MonoBehaviour
         List<ItemData> usableItems = inventoryManager.GetUsableItems();
         List<ItemData> equipableItems = inventoryManager.GetEquipableItems();
 
+        //노템전 구조 자체를 만들면 안됨.
         foreach (var usableItem in usableItems)
         {
             ApplyItemEffects(ref player, usableItem);
@@ -43,6 +44,7 @@ public class BattleManager : MonoBehaviour
 
         // 민첩함 비교하여 선공권 판단
         bool playerFirst = player.Agility >= enemyAgility;
+
 
         while (player.Life > 0 && enemyLife > 0)
         {
@@ -63,15 +65,15 @@ public class BattleManager : MonoBehaviour
 
             playerFirst = !playerFirst;
         }
-
+        
     }
 
     void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && gameManager != null && gameManager.UIManager != null)
         {
-            //int enemyCar = gameManager.curruntCar;
-            //BattleStart(enemyCar);
+            int enemyCar = gameManager.curruntCar;
+            BattleStart(enemyCar);
             gameManager.ChangeState(GameState.OnBattle);
             Debug.Log("배틀 스타트");
         }

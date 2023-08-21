@@ -206,6 +206,21 @@ public class UIManager : MonoBehaviour
         {
             // 선택한 아이템 데이터를 현재 아이템으로 저장
             _inventoryManager.EquipItem(currentItemData);
+            itemInfoObj.SetActive(false);
+
+            if (displayedItemData != null)
+            {
+                GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+                foreach (GameObject item in items)
+                {
+                    ItemPanelLoader itemComponent = item.GetComponent<ItemPanelLoader>();
+                    if (itemComponent != null && itemComponent.itemData == displayedItemData)
+                    {
+                        Destroy(item);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -220,15 +235,14 @@ public class UIManager : MonoBehaviour
 
             if (displayedItemData != null)
             {
-                // 아이템 정보에 기반하여 오브젝트 찾기
-                GameObject[] items = GameObject.FindGameObjectsWithTag("Item"); // 태그가 "Item"인 오브젝트들
+                GameObject[] items = GameObject.FindGameObjectsWithTag("Item"); 
                 foreach (GameObject item in items)
                 {
                     ItemPanelLoader itemComponent = item.GetComponent<ItemPanelLoader>();
                     if (itemComponent != null && itemComponent.itemData == displayedItemData)
                     {
                         Destroy(item);
-                        break; // 찾았으면 루프 종료
+                        break;
                     }
                 }
             }
