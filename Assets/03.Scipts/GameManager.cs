@@ -54,41 +54,41 @@ public class GameManager : MonoBehaviour
     }
 
     // 플레이어 기본 스탯을 가져오는 함수
-    public PlayerStats GetPlayerStats() => PlayerStates;
+    /*public PlayerStats GetPlayerStats() => PlayerStates;
     private PlayerStats _playerStats;
     public PlayerStats PlayerStates
     {
         get => _playerStats;
         set => _playerStats = value;
-    }
+    }*/
 
 
     #region 프로퍼티 정의
     private int playerLife;
     public int PlayerLife
     {
-        get { return 20; }
-        set { playerLife = Mathf.Max(0, value); } // 음수 값 방지
+        get { return playerLife; }
+        set { playerLife = Mathf.Max(0, value); }
     }
 
     private int playerAttack;
     public int PlayerAttack
     {
-        get { return 2; }
+        get { return playerAttack; }
         set { playerAttack = Mathf.Max(0, value); }
     }
 
     private int playerDefense;
     public int PlayerDefense
     {
-        get { return 3; }
+        get { return playerDefense; }
         set { playerDefense = Mathf.Max(0, value); }
     }
 
     private int playerAgility;
     public int PlayerAgility
     {
-        get { return 50; }
+        get { return playerAgility; }
         set { playerAgility = Mathf.Max(0, value); }
     }
 
@@ -97,14 +97,20 @@ public class GameManager : MonoBehaviour
     //초기화 작업
     void Start()
     {
-        PlayerStates = new();
+        /*PlayerStates = new();*/
         UIManager = UIManager.instance;
         Inventory = new InventoryManager();
         InitializeUI();
         player.SetActive(false);
         ChangeState(GameState.Title);
         UIManager.instance.titleObj.SetActive(true);
+
+        PlayerLife = 10;
+        PlayerAttack = 5;
+        PlayerDefense = 0;
+        PlayerAgility = 20;
     }
+
 
     private void InitializeUI()
     {
@@ -158,20 +164,9 @@ public class GameManager : MonoBehaviour
 
     public void Retry()
     {
-        //템 리셋 하는 기능이 있긴 해야 할듯
-        ChangeState(GameState.Title);
-        UIManager.instance.gameOverObj.SetActive(false);
+        Application.Quit();
     }
 
-    //모든 칸 클리어 했을 때.
-    public void ending()
-    {
-
-        if(curruntCar == 5)
-        {
-            UIManager.instance.endingObj.SetActive(true);
-        }    
-    }
 
     public void Reset()
     {

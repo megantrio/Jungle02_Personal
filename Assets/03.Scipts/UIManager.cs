@@ -80,10 +80,8 @@ public class UIManager : MonoBehaviour
         {
             itemInfoObj.SetActive(false);
         }
-        if (pocketPanelObj != null)
-        {
-            pocketPanelObj.SetActive(false);
-        }
+
+        SetPlayerLife(_gameManager.PlayerLife);
 
     }
 
@@ -117,7 +115,7 @@ public class UIManager : MonoBehaviour
     //전투 결과 창을 띄움
     public void SetResultView()
     {
-        SetViewObject(game: true, result: true);
+        SetViewObject(game: true, result: true, pocket: true);
     }
 
     //클리어 시 엔딩 뷰 띄움
@@ -160,7 +158,18 @@ public class UIManager : MonoBehaviour
         curruntCarText.SetText($"{curruntCar}번째 칸");
     }
 
-    //스테미나
+    public void SetPlayerLife(int PlayerLife)
+    {
+        string newText = string.Empty;
+        for (int i = 0; i < _gameManager.PlayerLife; i++)
+        {
+            newText += "♥";
+            lifeText.SetText(newText);
+        }
+    }
+    
+
+
     public void UpdatenemyLife(int enemyLifeValue)
     {
         string newText = string.Empty;

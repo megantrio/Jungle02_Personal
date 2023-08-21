@@ -14,6 +14,8 @@ public class DoorManager : MonoBehaviour
     private bool isPlayerColliding = false; // 플레이어와 충돌 여부
     private float scaleTimer = 0.0f; // 스케일 변화 타이머
     private Vector3 initialScale; // 초기 스케일 값
+
+
     private GameManager _gameManager;
     private InventoryManager inventoryManager;
     public GameObject battleButton;
@@ -23,6 +25,12 @@ public class DoorManager : MonoBehaviour
     public GameObject playerDamageObj;
     public GameObject enemyDamageObj;
     public GameObject enemyObj;
+
+    public int enemyLife;
+    public int enemyAttack;
+    public int enemyAgility;
+
+    public TextMeshProUGUI lifeText;
 
     private Collider2D doorManagerCollider;
 
@@ -81,23 +89,15 @@ public class DoorManager : MonoBehaviour
 
     public void BattleStart()
     {
-        StartCoroutine(BattleGetIt());
-        /*e = BattleGetIt();
-        ee.MoveNext();*/
+        StartCoroutine(BattleGetIt());       
     }
 
 
     IEnumerator BattleGetIt()
     {
         yield return null;
-        battleButton.SetActive(false);
         Debug.Log("전투 시작");
-        PlayerStats player = _gameManager.GetPlayerStats(); // 플레이어 스탯 가져오기
-        int enemyLife = 30;
-        int enemyAttack = 4;
-        int enemyAgility = 40;
-       
-
+        battleButton.SetActive(false);
         // 민첩함 비교하여 선공권 판단
         bool playerFirst = _gameManager.PlayerAgility >= enemyAgility;
         Debug.Log("선공권 판단");
@@ -134,13 +134,20 @@ public class DoorManager : MonoBehaviour
                 {
                     curruntPlayerLife -= damage;
                 }
-                
+
+                string newText = string.Empty;
+                for (int i = 0; i < curruntPlayerLife; i++)
+                {
+                    newText += "♥";
+                    lifeText.SetText(newText);
+                }
+
                 Debug.Log("현재 내 체력 : " + (curruntPlayerLife) );
                
                 playerDamageObj.SetActive(true);
                 playerDamage.SetText($"{damage}");
                 Debug.Log("Enemy attacks Player for " + damage + " damage.");
-                HideText();
+                HideText(); 
                 
             }
 
@@ -152,8 +159,15 @@ public class DoorManager : MonoBehaviour
                 Debug.Log("적이 죽었다");
                 UIManager.instance.SetResultView();
                 enemyObj.SetActive(false);
-
-                Debug.Log("초기화 전 내 체력은 = " + curruntPlayerLife);
+                string newText = string.Empty;
+                for (int i = 0; i < curruntPlayerLife; i++)
+                {
+                    newText += "♥";
+                    lifeText.SetText(newText);
+                }
+                
+                _gameManager.PlayerLife = curruntPlayerLife;
+                Debug.Log("전투 후 내 체력은 = " + _gameManager.PlayerLife);
             }
 
             if (curruntPlayerLife <= 0)
@@ -161,11 +175,10 @@ public class DoorManager : MonoBehaviour
 
                 Debug.Log("내가 죽었다");
                 UIManager.instance.SetGameViewDie();
+                _gameManager.Die();
             }
 
         }
-
-        
 
     }
     public void ButtonApply()

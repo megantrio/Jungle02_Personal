@@ -52,11 +52,21 @@ public class InventoryManager : MonoBehaviour
         UIManager = UIManager.instance;
     }
 
+    private void Update()
+    {
+        int nowLife = _gameManager.PlayerLife;
+        int nowAttack = _gameManager.PlayerAttack;
+        int nowDefense = _gameManager.PlayerDefense;
+        int nowAgility = _gameManager.PlayerAgility;
+
+        curruntAttack.text = $"현재 공격력 : {nowAttack} \n";
+        curruntDefense.text = $"현재 방어력 : {nowDefense} \n";
+        curruntAgility.text = $"현재 민첩함 : {nowAgility} \n";
+    }
+
     // 현재 장착된 아이템을 설정하는 메서드
     public void EquipItem(ItemData item)
     {
-        PlayerStats playerStats = _gameManager.GetPlayerStats();
-
         if (!availableItems.Contains(item) && equippedItemNames.Count < 4)
         {
             equippedItem = item;
@@ -98,32 +108,34 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    private (int modifiedLife, int modifiedAttack, int modifiedDefense, int modifiedAgility) 
-        ApplyItemStats(int lifeItemApply, int attackItemApply, int defenseItemApply, int agilityItemApply)
+    private (int modifiedLife, int modifiedAttack, int modifiedDefense, int modifiedAgility)
+    ApplyItemStats(int lifeItemApply, int attackItemApply, int defenseItemApply, int agilityItemApply)
     {
-        PlayerStats playerStats = _gameManager.GetPlayerStats();
 
-        int modifiedLife = playerStats.Life += lifeItemApply;
-        int modifiedAttack = playerStats.Attack += attackItemApply;
-        int modifiedDefense = playerStats.Defense += defenseItemApply;
-        int modifiedAgility = playerStats.Agility += agilityItemApply;
+        int modifiedLife = _gameManager.PlayerLife += lifeItemApply;
+        int modifiedAttack = _gameManager.PlayerAttack += attackItemApply;
+        int modifiedDefense = _gameManager.PlayerDefense += defenseItemApply;
+        int modifiedAgility = _gameManager.PlayerAgility += agilityItemApply;
 
         return (modifiedLife, modifiedAttack, modifiedDefense, modifiedAgility);
     }
 
-    private void UpdateUI(int modifiedLife, int modifiedAttack, int modifiedDefense, int modifiedAgility)
-    {
-        _gameManager.PlayerLife += modifiedLife;
-        _gameManager.PlayerAttack += modifiedAttack;
-        _gameManager.PlayerDefense += modifiedDefense;
-        _gameManager.PlayerAgility += modifiedAgility;
 
-        curruntAttack.text = $"현재 공격력 : {modifiedLife} \n";
-        curruntDefense.text = $"현재 방어력 : {modifiedDefense} \n";
-        curruntAgility.text = $"현재 민첩함 : {modifiedAgility} \n";
+    private void UpdateUI(int a, int b, int c, int d)
+    {
+        Debug.Log("장착 전체력 : " + _gameManager.PlayerLife);
+        _gameManager.PlayerLife = a;
+        Debug.Log("장착 후체력 : " + _gameManager.PlayerLife);
+        _gameManager.PlayerAttack = b;
+        _gameManager.PlayerDefense = c;
+        _gameManager.PlayerAgility = d;
+
+        curruntAttack.text = $"현재 공격력 : {b} \n";
+        curruntDefense.text = $"현재 방어력 : {c} \n";
+        curruntAgility.text = $"현재 민첩함 : {d} \n";
 
         string newText = string.Empty;
-        for (int i = 0; i < modifiedLife; i++)
+        for (int i = 0; i < a; i++)
         {
             newText += "♥";
             lifeText.SetText(newText);
@@ -170,5 +182,8 @@ public class InventoryManager : MonoBehaviour
         availableItems.Clear();
         Debug.Log("Inventory items reset.");
     }
+
+   
+
 
 }

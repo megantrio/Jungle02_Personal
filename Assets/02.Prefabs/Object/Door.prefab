@@ -121,8 +121,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6516070748447209063}
   - component: {fileID: 6516070748447209060}
-  - component: {fileID: 6516070748447209061}
   - component: {fileID: 6516070748447209062}
+  - component: {fileID: 4875195822175270423}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -198,27 +198,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6516070748447209061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6516070748447209058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a38db4f5bf1e9314daa76bf0f9df2277, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorChild: {fileID: 6516070747765384292}
-  scaleDuration: 0.5
-  enableTriggerAfterActivation: 1
-  battleButton: {fileID: 0}
-  playerDamage: {fileID: 0}
-  enemyDamage: {fileID: 0}
-  playerDamageObj: {fileID: 0}
-  enemyDamageObj: {fileID: 0}
-  enemyObj: {fileID: 0}
 --- !u!61 &6516070748447209062
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -245,3 +224,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4875195822175270423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6516070748447209058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38db4f5bf1e9314daa76bf0f9df2277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorChild: {fileID: 6516070747765384292}
+  scaleDuration: 0.5
+  enableTriggerAfterActivation: 1
+  battleButton: {fileID: 0}
+  playerDamage: {fileID: 0}
+  enemyDamage: {fileID: 0}
+  playerDamageObj: {fileID: 0}
+  enemyDamageObj: {fileID: 0}
+  enemyObj: {fileID: 0}
+  enemyLife: 19
+  enemyAttack: 2
+  enemyAgility: 19
+  lifeText: {fileID: 0}
