@@ -82,6 +82,7 @@ public class UIManager : MonoBehaviour
         }
 
         SetPlayerLife(_gameManager.PlayerLife);
+        SetTitleView();
 
     }
 

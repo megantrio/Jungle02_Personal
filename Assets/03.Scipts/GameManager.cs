@@ -53,14 +53,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 플레이어 기본 스탯을 가져오는 함수
-    /*public PlayerStats GetPlayerStats() => PlayerStates;
-    private PlayerStats _playerStats;
-    public PlayerStats PlayerStates
-    {
-        get => _playerStats;
-        set => _playerStats = value;
-    }*/
 
 
     #region 프로퍼티 정의
