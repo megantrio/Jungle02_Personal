@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ItemPanelLoader : MonoBehaviour
-{
-    public ItemInfo itemInfo; // 아이템 정보 컴포넌트를 Inspector에서 연결해주세요.
+{   
+    public ItemData itemData;
 
-    private void OnTriggerEnter(Collider collision)
+
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.tag == "Player")
         {
-
+            UIManager.instance.ShowItemInfo(itemData);
             Debug.Log("충돌함");
-            PanelManager panelManager = FindObjectOfType<PanelManager>();
-            if (panelManager != null)
-            {
-                panelManager.ShowItemInfo(itemInfo); // 아이템 정보를 패널에 표시하고 패널을 활성화
-            }
         }
+
     }
 }

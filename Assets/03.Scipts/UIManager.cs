@@ -1,86 +1,91 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class UIManager : MonoBehaviour
 {
     #region Singleton
-    public static UIManager instance; // UIManager 클래스의 인스턴스를 저장하기 위한 정적 변수
+    public static UIManager instance;
 
     private void Awake()
     {
-        _gameManager = GameManager.instance; // GameManager 클래스의 인스턴스를 가져옴
-        _gameManager.UIManager = this; // GameManager에 현재 UIManager 인스턴스를 등록
-
-        if (instance == null) // UIManager의 인스턴스가 생성되어있지 않은 경우
-        {
-            instance = this; // 현재 UIManager 인스턴스를 instance에 할당
-        }
-        else // 이미 다른 UIManager 인스턴스가 존재하는 경우
-        {
-            Destroy(this); // 현재 UIManager 인스턴스를 파괴하여 중복 생성을 방지
-        }
-
+        instance = this;
+        _inventoryManager = new InventoryManager();
     }
     #endregion
 
     private GameManager _gameManager;
+    private InventoryManager _inventoryManager;
+    private ItemData currentItemData;
+    private ItemData displayedItemData;
 
+    #region Object할당
     [Header("UIGroup")]
     public GameObject gameObj; //기본 UI
     public GameObject itemInfoObj; //아이템 정보창
     public GameObject resultObj; //전투 결과창
     public GameObject titleObj; //타이틀 창
     public GameObject gameOverObj; //게임 오버 창
-    public GameObject endingObj; //엔딩 창
+    public GameObject endingObj; //엔딩 창   
 
     [Header("Default Game Info Area")]
     public TextMeshProUGUI lifeText; //생명력
     public TextMeshProUGUI curruntCarText; //현재 열차 칸
-    public TextMeshProUGUI staminaText; // 체력칸
+    public TextMeshProUGUI enemyLifeText;
+    public GameObject emenyLifeObj;
 
     [Header("Item Info")]
     //public Transform itemCreatePosTr;
     public GameObject itemPrefab;
+    public TextMeshProUGUI itemInfoText;
+
+    [Header("Pocket")]
+    public GameObject pocketObj; //인벤토리
+    public TextMeshProUGUI curruntEquipItem;
+    public TextMeshProUGUI curruntAttack;
+    public TextMeshProUGUI curruntDefense;
+    public TextMeshProUGUI curruntAgility;
+
 
     [Header("resultPanel")]
     public TextMeshProUGUI resultText;
-    public TextMeshProUGUI attackNumText;
-    public TextMeshProUGUI damageText;
-    public TextMeshProUGUI blockText;
-    public TextMeshProUGUI decreaseText;
 
     [Header("Choice")]
     public Button equipButton;
     public Button discardButton;
+    #endregion
 
-    [Header("Clear")]
-    public TextMeshProUGUI carClearText;
-
-
-    #region Method by GameState
-
-    public void SetDefaultView()
+    private void Start()
     {
-        SetViewObject(game: true);
+        if (itemInfoObj != null)
+        {
+            itemInfoObj.SetActive(false);
+        }
     }
 
+    #region 뷰 모음 
+    //기본 뷰
+    public void SetDefaultView()
+    {
+        SetViewObject(game: true, pocket: true);
+        titleObj.SetActive(false);
+    }
+
+    //타이틀 뷰
     public void SetTitleView()
     {
         SetViewObject(title: true);
     }
 
+
     //itemInfo를 띄움
-    public void SetItemInfoView()
+    public void SetItemInfoView(ItemData itemData)
     {
+        currentItemData = itemData;
+        UpdateItemInfoPanelUI();
         SetViewObject(game: true, itemInfo: true);
     }
 
@@ -90,40 +95,39 @@ public class UIManager : MonoBehaviour
         SetViewObject(game: true, result: true);
     }
 
-    //칸 클리어시
-    public void SetClearView()
-    {
-        carClearText.SetText($"이제 당신은 열차의 {_gameManager.curruntCar} 번째 칸을 넘어설 수 있습니다.");
-    }
-
+    //클리어 시 엔딩 뷰 띄움
     public void SetEndingView()
     {
         SetViewObject(ending: true);
+        gameObj.SetActive(false);
+        pocketObj.SetActive(false);
     }
 
+    //죽었을 때의 뷰
     public void SetGameViewDie()
     {
         SetViewObject(gameOver: true);
     }
 
-    private void SetViewObject(bool game = false, bool itemInfo = false, bool result = false, bool gameOver = false, bool title = false, bool ending = false)
+    private void SetViewObject(bool game = false, bool itemInfo = false, bool result = false,
+        bool gameOver = false, bool title = false, bool ending = false, bool pocket = false, bool enemyLife = false)
     {
         gameObj.SetActive(game);
         itemInfoObj.SetActive(itemInfo);
         resultObj.SetActive(result);
         gameOverObj.SetActive(gameOver);
         endingObj.SetActive(ending);
-        titleObj.gameObject.SetActive(titleObj);
-
+        titleObj.gameObject.SetActive(title);
+        pocketObj.gameObject.SetActive(pocket);
+        emenyLifeObj.SetActive(enemyLife);
     }
     #endregion
 
-
+    #region 업데이트
     private void UpdateAllText()
     {
         UpdatePlayerLife(_gameManager.DefaultPlayerLife);
         UpdateCarText(_gameManager.curruntCar);
-        UpdatePlayerStamina(_gameManager.DefaultPlayerStamina);
     }
 
     public void UpdatePlayerLife(int LifeValue)
@@ -140,49 +144,110 @@ public class UIManager : MonoBehaviour
     }
 
     //스테미나
-    public void UpdatePlayerStamina(int StaminaValue)
+    public void UpdatenemyLife(int enemyLifeValue)
     {
         string newText = string.Empty;
-        for (int i = 0; i < StaminaValue; i++)
-            newText += "★";
-        staminaText.SetText(newText);
+        for (int i = 0; i < enemyLifeValue; i++)
+            newText += "♥";
+        enemyLifeText.SetText(newText);
     }
+    #endregion
 
-    public void ShowResult()
+    //전투 결과 출력
+    public void ShowResult(int remainingEnemyLife, int remainingPlayerLife)
     {
-        int remainingEnemyLife, remainingPlayerLife;
-
-        // 전투 결과 계산
-        BattleManager.Instance.CalculateBattleResults(BattleManager.Instance.GetEnemyStaminaByCar
-            (GameManager.Instance.currentCar), out remainingEnemyLife, out remainingPlayerLife);
-
-        // 결과에 따라 메시지 생성
-        string resultMessage;
-        if (remainingEnemyLife == 0)
+       
+        string resultMessage = remainingEnemyLife == 0 ? "이겼다..." : "";
+        if (remainingPlayerLife == 0)
         {
-            resultMessage = "이겼다...";
-        }
-        else
-        {
-            resultMessage = "치명상을 입었다...";
+            _gameManager.Die();
         }
 
+        resultObj.SetActive(true);
         resultText.SetText(resultMessage);
     }
 
+    #region 아이템
 
-    public void LoadItemInfo()
+    public void ShowItemInfo(ItemData itemData)
     {
+        currentItemData = itemData;
+        UpdateItemInfoPanelUI();
         itemInfoObj.SetActive(true);
+        displayedItemData = itemData;
     }
+
+    public void HideItemInfoPanel()
+    {
+        itemInfoObj.SetActive(false);
+        currentItemData = null;
+    }
+
+    private void UpdateItemInfoPanelUI()
+    {
+        if (itemInfoObj != null && currentItemData != null)
+        {
+
+            itemInfoText.text = $"아이템 이름 : {currentItemData.Name}\n" +
+                                $"아이템 설명 : {currentItemData.Description}\n" +
+                                $"추가 생명 : {currentItemData.AddLife}\n" +
+                                $"추가 공격력 : {currentItemData.AddAttack}\n" +
+                                $"추가 방어력 : {currentItemData.AddDefense}\n" +
+                                $"추가 민첩함 : {currentItemData.AddAgility}";
+
+        }
+
+    }
+
+    // 아이템 장착 버튼 클릭 시
+    public void EquipButtonOnClick()
+    {
+        if (currentItemData != null)
+        {
+            // 선택한 아이템 데이터를 현재 아이템으로 저장
+            _inventoryManager.EquipItem(currentItemData);
+        }
+    }
+
+
+    // 버리기 버튼 클릭 시
+    public void UnequipButtonOnClick()
+    {
+        if (currentItemData != null)
+        {
+            _inventoryManager.UnequipItem();
+            itemInfoObj.SetActive(false);
+
+            if (displayedItemData != null)
+            {
+                // 아이템 정보에 기반하여 오브젝트 찾기
+                GameObject[] items = GameObject.FindGameObjectsWithTag("Item"); // 태그가 "Item"인 오브젝트들
+                foreach (GameObject item in items)
+                {
+                    ItemPanelLoader itemComponent = item.GetComponent<ItemPanelLoader>();
+                    if (itemComponent != null && itemComponent.itemData == displayedItemData)
+                    {
+                        Destroy(item);
+                        break; // 찾았으면 루프 종료
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    public void LoadItemInfo(ItemData itemData)
+    {
+        currentItemData = itemData;
+        UpdateItemInfoPanelUI();
+        SetViewObject(game: true, itemInfo: true);
+    }
+
 
     public void Retry()
     {
         _gameManager.Retry();
     }
 
-    public void ResetItem()
-    {
-        Destroy(this.gameObject);
-    }
 }

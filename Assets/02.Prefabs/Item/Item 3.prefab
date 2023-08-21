@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 931283311986820051}
   - component: {fileID: 4672862474047333023}
   - component: {fileID: 3163461801888193687}
-  - component: {fileID: 8402012032025977221}
-  - component: {fileID: -1998599395583419320}
-  - component: {fileID: 470023211531441009}
+  - component: {fileID: 7169923248868116060}
+  - component: {fileID: 3627067420693098529}
   m_Layer: 0
   m_Name: Item 3
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +116,20 @@ PolygonCollider2D:
       - {x: -0.5, y: 0}
       - {x: 0, y: -0.25}
       - {x: 0.5, y: 0}
---- !u!50 &8402012032025977221
+--- !u!114 &7169923248868116060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938173069526852872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584ee13e56abaff489649373168dd901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 6747c7cc08c832d4bafbad66e7ff83d9, type: 2}
+--- !u!50 &3627067420693098529
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -134,38 +146,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &-1998599395583419320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938173069526852872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18c52314c0fab8b47a77612f06eaa484, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: "\uC544\uC774\uC5D0\uD161"
-  itemDescription: "\uC5B4\u3163\uB7EC\uC774"
-  playerHelth: 3
-  playerWelth: 6
-  enemyHelth: 4
-  enemyWelth: 8
---- !u!114 &470023211531441009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938173069526852872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584ee13e56abaff489649373168dd901, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemInfo: {fileID: -1998599395583419320}
+  m_CollisionDetection: 1
+  m_Constraints: 4

@@ -1,41 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ItemEnums;
 
-public class InventoryManager
+public class InventoryManager : MonoBehaviour
 {
-    private List<EquipItemType> equipItems;
-    private List<UseItemType> useItems;
+    public List<ItemData> availableItems = new List<ItemData>(); // 아이템 데이터를 담을 리스트
+    private ItemData equippedItem; // 현재 장착된 아이템을 담을 변수
 
-    public InventoryManager()
+    // 현재 장착된 아이템을 설정하는 메서드
+    public void EquipItem(ItemData item)
     {
-        equipItems = new List<EquipItemType>();
-        useItems = new List<UseItemType>();
+        equippedItem = item;
     }
 
-    public void EquipItem(EquipItemType type)
+    // 현재 장착된 아이템을 해제하는 메서드
+    public void UnequipItem()
     {
-        equipItems.Add(type);
-        Debug.Log($"Equipped {type}.");
+        equippedItem = null;
     }
 
-    public void UseItem(UseItemType type)
+    // 현재 장착된 아이템을 가져오는 메서드
+    public ItemData GetEquippedItem()
     {
-        useItems.Add(type);
-        Debug.Log($"Used {type}.");
+        return equippedItem;
     }
 
-    public void ResetUsedItems()
+    public List<ItemData> GetEquipableItems()
     {
-        useItems.Clear();
-        Debug.Log("Used items reset.");
+        return availableItems.FindAll(item => item.ItemType == ItemType.Equipable);
+    }
+
+    public List<ItemData> GetUsableItems()
+    {
+        return availableItems.FindAll(item => item.ItemType == ItemType.Usable);
     }
 
     public void ResetItems()
     {
-        equipItems.Clear();
-        useItems.Clear();
-        UIManager.instance.ResetItem();
+        availableItems.Clear();
         Debug.Log("Inventory items reset.");
     }
 

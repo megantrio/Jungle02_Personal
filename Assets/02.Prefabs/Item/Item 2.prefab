@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7022140993167510398}
   - component: {fileID: 1768995519510345059}
-  - component: {fileID: 4001344933223647890}
   - component: {fileID: 8037521965900970467}
-  - component: {fileID: 4477283025594354692}
-  - component: {fileID: 7556670503536229065}
+  - component: {fileID: 2869690026307245296}
+  - component: {fileID: -1231872947892870445}
   m_Layer: 0
   m_Name: Item 2
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,27 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4001344933223647890
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6895119503136464999}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!58 &8037521965900970467
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -125,25 +103,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &4477283025594354692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6895119503136464999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18c52314c0fab8b47a77612f06eaa484, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: "\uCC3D"
-  itemDescription: "\uBC29\uD328"
-  playerHelth: 6
-  playerWelth: 4
-  enemyHelth: 8
-  enemyWelth: 3
---- !u!114 &7556670503536229065
+--- !u!114 &2869690026307245296
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,4 +115,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584ee13e56abaff489649373168dd901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemInfo: {fileID: 4477283025594354692}
+  itemData: {fileID: 11400000, guid: 22330283d9f4d2e4990ba7df47aeb0f0, type: 2}
+--- !u!50 &-1231872947892870445
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895119503136464999}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 2
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

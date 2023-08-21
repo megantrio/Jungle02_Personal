@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager { get; set; }
     public InventoryManager Inventory { get; private set; }
     public int currentCar = 0;
+    public GameObject player;
 
     public static GameManager Instance => instance;
 
@@ -52,23 +53,27 @@ public class GameManager : MonoBehaviour
 
     //플레이어 기본 스탯
     public int DefaultPlayerLife = 10;
-    public int DefaultPlayerStamina = 10;
+    public int DefaultPlayerAgility = 10;
     public int DefaultPlayerAttack = 10;
     public int DefaultPlayerDefense = 10;
- 
 
+    // 플레이어 기본 스탯을 가져오는 함수
+    public PlayerStats GetPlayerStats()
+    {
+        PlayerStats playerStats = new PlayerStats();
+        playerStats.Life = DefaultPlayerLife;
+        playerStats.Agility = DefaultPlayerAgility;
+        playerStats.Attack = DefaultPlayerAttack;
+        playerStats.Defense = DefaultPlayerDefense;
+        return playerStats;
+    }
+
+    #region 프로퍼티 정의
     private int playerLife;
     public int PlayerLife
     {
         get { return playerLife; }
         set { playerLife = Mathf.Max(0, value); } // 음수 값 방지
-    }
-
-    private int playerStamina;
-    public int PlayerStamina
-    {
-        get { return playerStamina; }
-        set { playerStamina = Mathf.Max(0, value); } 
     }
 
     private int playerAttack;
@@ -84,19 +89,35 @@ public class GameManager : MonoBehaviour
         get { return playerDefense; }
         set { playerDefense = Mathf.Max(0, value); }
     }
-    
-    private void InitializePlayerStats()
-    {
-        PlayerLife = DefaultPlayerLife;
-        PlayerStamina = DefaultPlayerStamina;
-        // 기타 초기화 작업
-    }
 
+    #endregion
+
+    //초기화 작업
     void Start()
     {
         UIManager = UIManager.instance;
         Inventory = new InventoryManager();
+        InitializeUI();
+        player.SetActive(false);
         ChangeState(GameState.Title);
+        UIManager.instance.titleObj.SetActive(true);
+    }
+
+    private void InitializeUI()
+    {
+        UIManager.instance.gameObj.SetActive(false);
+        UIManager.instance.itemInfoObj.SetActive(false);
+        UIManager.instance.resultObj.SetActive(false);
+        UIManager.instance.gameOverObj.SetActive(false);
+        UIManager.instance.endingObj.SetActive(false);
+        UIManager.instance.pocketObj.SetActive(false);
+        UIManager.instance.emenyLifeObj.SetActive(false);
+    }
+
+
+    private void InitializePlayerStats()
+    {
+        PlayerLife = DefaultPlayerLife;
     }
 
 
@@ -111,7 +132,7 @@ public class GameManager : MonoBehaviour
             case GameState.NotBattle:
                 break;
             case GameState.OnBattle:
-                StartBattle();
+                Battle();
                 break;
             case GameState.Die:
                 Die();
@@ -119,40 +140,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+
+        UIManager?.SetGameViewDie();
+        player.SetActive(false);
+
+    }
+
 
     public void gameStart()
     {
         curruntCar = 1;
+
+        player.SetActive(true);
         ChangeState(GameState.NotBattle);
         UIManager.instance.titleObj.SetActive(false);
         UIManager.SetDefaultView();
     }
 
-
-    //전투 상태일때 처리할 것들
-    //public void TriggerBattleDoor() => ChangeState(GameState.OnBattle);
-    void StartBattle()
+    public void Battle()
     {
-        UIManager.SetResultView();
-    }
-
-/*    public string BattleResult()
-    {
-
-        if(remainingEnemyLife == 0)
-        {
-            return "이겼다...";
-        }
-        else
-        {
-            return "치명상을 입었다...";
-        }
-    }*/
-
-    //죽었을때
-    void Die()
-    {
-        UIManager?.SetGameViewDie();
+        UIManager.instance.pocketObj.SetActive(false);
     }
 
     public void Retry()
@@ -161,7 +170,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Title);
     }
 
-
+    //모든 칸 클리어 했을 때.
     public void ending()
     {
         if(curruntCar == 11)

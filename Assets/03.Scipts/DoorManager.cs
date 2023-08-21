@@ -54,8 +54,9 @@ public class DoorManager : MonoBehaviour
                 doorChild.SetActive(true);
                 isPlayerColliding = true;
                 _gameManager.currentCar++;
+                UIManager.instance.UpdateCarText(_gameManager.currentCar);
                 Debug.Log("currentCar increased: " + _gameManager.currentCar);
-            }            
+            }
         }
     }
 }
