@@ -5,6 +5,7 @@ public class InventoryManager : MonoBehaviour
 {
     private static InventoryManager instance;
     public static InventoryManager Instance => instance;
+    public UIManager UIManager { get; set; }
 
     public List<ItemData> availableItems = new List<ItemData>(); // 아이템 데이터를 담을 리스트
     private ItemData equippedItem; // 현재 장착된 아이템을 담을 변수
@@ -25,16 +26,34 @@ public class InventoryManager : MonoBehaviour
     }
     #endregion
 
+    void Start()
+    {
+        UIManager = UIManager.instance;
+    }
+
     // 현재 장착된 아이템을 설정하는 메서드
     public void EquipItem(ItemData item)
     {
         equippedItem = item;
+        availableItems.Add(item);
+
+        if(availableItems.Count >= 4 ) 
+        {
+            UIManager.instance.noticeObj.SetActive(true);
+            Invoke("CloseNotice", 1f);
+        }
+    }
+
+    public void CloseNotice()
+    {
+        UIManager.instance.noticeObj.SetActive(false);
     }
 
     // 현재 장착된 아이템을 해제하는 메서드
     public void UnequipItem()
     {
         equippedItem = null;
+        availableItems.RemoveAt(1);
     }
 
     // 현재 장착된 아이템을 가져오는 메서드

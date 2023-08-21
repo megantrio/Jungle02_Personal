@@ -102,6 +102,12 @@ MonoBehaviour:
   - {fileID: 7329031404839427978, guid: 0f9a2cca3679abd4a88ce21741f4a13d, type: 3}
   - {fileID: 6895119503136464999, guid: ea0400f96a574ee4689e526fe3d533a9, type: 3}
   - {fileID: 1938173069526852872, guid: 611d0bbefa28fd34d85fbd94e6b4c828, type: 3}
+  - {fileID: 8002662299754380582, guid: 607911ee44d51ad41bd641c4aa3de00b, type: 3}
+  - {fileID: 6496157047946730484, guid: ca4032caa253b544fb1ef905d890b1bb, type: 3}
+  - {fileID: 5853064573627346686, guid: cfbe38cd47572134a9cbc07b56f24665, type: 3}
+  - {fileID: 1408581053006943069, guid: 140eb991913926141870e7bb78ad54c7, type: 3}
+  - {fileID: 8878407515997950723, guid: cdbf12fb9cb746947ac6ac22780305f8, type: 3}
+  - {fileID: 685164947502503539, guid: 37a7dfa9687d1b1438c2bd01a77b1676, type: 3}
   jumpForceMin: 1
   jumpForceMax: 3
 --- !u!61 &555394143617146372
